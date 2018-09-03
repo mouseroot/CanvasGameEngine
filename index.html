@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>CanvasGameEngine</title>
+    </head>
+    <body>
+        <canvas id="display"></canvas>
+        <script>
+
+            class CanvasEngine {
+                constructor(displayElement, width, height) {
+                    this.canvas = document.getElementById(displayElement);
+                    this.context = this.canvas.getContext("2d");
+                    this.width = width;
+                    this.height = height;
+                    this.pipeline = [];
+                }
+
+                add_pipeline(draw_pipeline) {
+                    this.pipeline.push(draw_pipeline);
+                }
+
+                render() {
+                    for(let i in this.pipeline) {
+                        this.pipeline[i].call(null, this.context);
+                    }
+                    
+                }
+
+
+            }
+
+            function draw(cx) {
+                cx.fillStyle = "white";
+                cx.fillRect(0,0,50,50);
+
+                cx.fillStyle = "black";
+                cx.fillRect(0,0,25,25);
+                requestAnimationFrame(this);
+            }
+
+            document.addEventListener("DOMContentLoaded", function() {
+                let cEngine = new CanvasEngine("display",800,600);
+                cEngine.add_pipeline(draw);
+                cEngine.render();
+
+            }, false);
+
+        </script>
+    </body>
+</html>
